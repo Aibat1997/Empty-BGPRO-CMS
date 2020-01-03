@@ -1,6 +1,4 @@
-# Empty BGPRO CMS
-
-## For new empty projects 
+# Empty BGPRO CMS for new empty projects 
 
 ## After clone make this steps:
 
