@@ -10,20 +10,19 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
-
-class Helpers {
-
+class Helpers
+{
     public static function getTranslatedSlugRu($text)
     {
         $str = Str::slug($text, '-');
         return $str;
     }
 
-    public static function getMonthName($number) 
+    public static function getMonthName($number)
     {
         $lang = App::getLocale();
 
-        if($lang == 'ru'){
+        if ($lang == 'ru') {
             $monthAr = array(
                 1 => array('Январь', 'Января'),
                 2 => array('Февраль', 'Февраля'),
@@ -38,8 +37,7 @@ class Helpers {
                 11=> array('Ноябрь', 'Ноября'),
                 12=> array('Декабрь', 'Декабря')
             );
-        }
-        else if($lang == 'kz'){
+        } elseif ($lang == 'kz') {
             $monthAr = array(
                 1 => array('Қаңтар', 'Қаңтар'),
                 2 => array('Ақпан', 'Ақпан'),
@@ -54,8 +52,7 @@ class Helpers {
                 11=> array('Қараша', 'Қараша'),
                 12=> array('Желтоқсан', 'Желтоқсан')
             );
-        }
-        else {
+        } else {
             $monthAr = array(
                 1 => array('January', 'January'),
                 2 => array('February', 'February'),
@@ -71,7 +68,7 @@ class Helpers {
                 12=> array('December', 'December')
             );
         }
-        if(!isset($monthAr[(int)$number][1])){
+        if (!isset($monthAr[(int)$number][1])) {
             return '';
         }
         return $monthAr[(int)$number][1];
@@ -106,7 +103,7 @@ class Helpers {
 
         if ($disk_name == 'avatar') {
             $result = '/media_avatar' .$image_name;
-        }else{
+        } else {
             $result = '/media' .$image_name;
         }
 
@@ -138,4 +135,21 @@ class Helpers {
         return $result;
     }
 
-} 
+    public static function getCurrency(...$currency)
+    {
+        $url = "http://www.nationalbank.kz/rss/rates_all.xml";
+        $dataObj = simplexml_load_file($url);
+        $json = json_encode($dataObj);
+        $allcurrency = json_decode($json, true);
+        $result = array();
+        foreach ($allcurrency['channel']['item'] as $item){
+            foreach ($currency as $value) {
+                if ($item['title'] == $value) {
+                    array_push($result, $item);
+                }
+            }
+        }
+
+        return $result;
+    }
+}
