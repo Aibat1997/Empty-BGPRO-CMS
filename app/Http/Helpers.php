@@ -18,11 +18,11 @@ class Helpers
         return $str;
     }
 
-    public static function getMonthName($number)
+    public static function getMonthName(int $number, bool $withEnd) 
     {
         $lang = App::getLocale();
 
-        if ($lang == 'ru') {
+        if($lang == 'ru'){
             $monthAr = array(
                 1 => array('Январь', 'Января'),
                 2 => array('Февраль', 'Февраля'),
@@ -37,7 +37,8 @@ class Helpers
                 11=> array('Ноябрь', 'Ноября'),
                 12=> array('Декабрь', 'Декабря')
             );
-        } elseif ($lang == 'kz') {
+        }
+        else if($lang == 'kz'){
             $monthAr = array(
                 1 => array('Қаңтар', 'Қаңтар'),
                 2 => array('Ақпан', 'Ақпан'),
@@ -52,32 +53,18 @@ class Helpers
                 11=> array('Қараша', 'Қараша'),
                 12=> array('Желтоқсан', 'Желтоқсан')
             );
-        } else {
-            $monthAr = array(
-                1 => array('January', 'January'),
-                2 => array('February', 'February'),
-                3 => array('March', 'March'),
-                4 => array('April', 'April'),
-                5 => array('May', 'May'),
-                6 => array('June', 'June'),
-                7 => array('July', 'July'),
-                8 => array('August', 'August'),
-                9 => array('September', 'September'),
-                10=> array('October', 'October'),
-                11=> array('November', 'November'),
-                12=> array('December', 'December')
-            );
         }
-        if (!isset($monthAr[(int)$number][1])) {
-            return '';
+        else if($lang == 'en'){
+            return date("F", mktime(0, 0, 0, $number, 1));
         }
-        return $monthAr[(int)$number][1];
+        
+        return $withEnd == true ? $monthAr[$number][1] : $monthAr[$number][0];
     }
 
     public static function getDateFormat($date_param)
     {
         $date = Carbon::parse($date_param);
-        return $date->day .' '.Helpers::getMonthName($date->month).', '.$date->year;
+        return $date->day .' '.Helpers::getMonthName($date->month, true).', '.$date->year;
     }
 
     public function simpleDate($date)
