@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['web'])->namespace('Admin')->prefix('admin')->group(function () {
+Route::middleware(['admin','web'])->namespace('Admin')->prefix('admin')->group(function () {
     Route::resource('users', 'UsersController');
     Route::resource('role', 'RoleController');
     Route::get('/', function () {
