@@ -43,18 +43,17 @@ class UsersController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'phone' => 'required|string|max:255|unique:users',
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]); 
+        ]);
 
         if ($request->hasFile('avatar')) {
             $result = Helpers::storeImg('avatar', 'avatar', $request);
-        }else {
+        } else {
             $result = '/img/default-user.jpg';
         }
 
         User::create([
-            'user_name_ru' => $request->user_name_ru,
-            'user_name_kz' => (!empty($request->user_name_kz)) ? $request->user_name_kz : null,
-            'user_name_en' => (!empty($request->user_name_en)) ? $request->user_name_en : null, 
+            'last_name' => $request->last_name,
+            'first_name' => $request->first_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
@@ -109,6 +108,6 @@ class UsersController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete(); 
+        $user->delete();
     }
 }
